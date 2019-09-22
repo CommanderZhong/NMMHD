@@ -9,6 +9,8 @@
 \usepackage{psfrag}
 \usepackage{natbib}
 \usepackage{hyperref}
+\usepackage{overpic}
+\usepackage{rotating}
 
 \begin{document}
 	
@@ -74,8 +76,8 @@
 	\begin{figure}[htb]
 		%\begin{center}
 		\begin{tabular}{cc}
-			\includegraphics[width=.5\textwidth]{coldp_2_0.eps} &
-			\includegraphics[width=.5\textwidth]{coldp_0_5.eps}
+			\includegraphics[scale=0.45]{figure2_2.eps} &
+			\includegraphics[scale=0.45]{figure2_1.eps}
 			\\
 			(a) & (b)
 		\end{tabular}
@@ -101,6 +103,38 @@
 	其中单成分的结果可以参考图\ref{ColdPlasma}为参照, 进行分析和比较.
 	
 	\section{磁流体力学快磁声激波关系}
+	
+	\begin{figure}[htb]
+		\centering \large
+		\begin{overpic}[scale=0.90]{figure3.pdf}
+			\put(5,40){$\mathbf{\frac{X^{\pm}_f}{H_f}}$}
+			\put(60,60){$\frac{X^{+}_f}{H_f}$}
+			\put(75,35){$\frac{X^{-}_f}{H_f}$}
+			\put(70,26){$\frac{X^{+}_f}{H_f}$}
+			\put(9,5){$0$}
+			\put(50,4){$\mathbf{h_f}$}
+			\put(67,4){$\hat{h_f}$}
+			\put(88,4){$\hat{\hat{h_f}}$}
+			\put(92,23){$\frac{\left[1+s_{0}(\gamma-1)\right] \sin \theta_{0}}{\left(1-s_{0}\right)(\gamma-1)-\gamma \sin ^{2} \theta_{0}}$}
+			\put(-22,23){$\frac{\sqrt{\left(1-s_{0}\right)^{2}+4 s_{0} \sin ^{2} \theta_{0}}-\left(1-s_{0}\right)}{2 \sin \theta_{0}}$}
+			\put(12,26){\begin{turn}{4}
+					$s_{0} \geq 1-\gamma \sin ^{2} \theta_{0} /(\gamma-1)$
+				\end{turn}
+			}
+			\put(12,20){$s_{0} < 1-\gamma \sin ^{2} \theta_{0} /(\gamma-1)$}
+			\put(66,55){\begin{sideways}
+					$\rightarrow  \infty $
+				\end{sideways}
+			}
+			\put(6,23.5){\begin{turn}{7}
+					$\rightarrow$
+			\end{turn}}
+			\put(6,22.5){\begin{turn}{-7}
+					$\rightarrow$
+			\end{turn}}
+		\end{overpic}
+		\caption{快磁声激波关系}\label{FShock}
+	\end{figure}
 	
 	磁流体力学快磁声激波关系中\citep{Jeffrey1964}, 用磁场增量$h_f$ ($h_f \ge 0$)
 	来表示激波的强度, 通常分析下面的公式
@@ -143,12 +177,16 @@
 	将关系(\ref{Eqn:fShock})用图形表示
 	(可取$\theta_0$的某个典型值进行分析, 如$\theta_0=15^\circ$),
 	并参考图\ref{FShock}或文献\citet{Jeffrey1964}第229页中的图形以进行比较.
-	\begin{figure}[htb]
-		\centering
-		\includegraphics[width=.9\textwidth]{fshock.eps}
-		\caption{Fast shock relation.} \label{FShock}
-	\end{figure}
 
+	\section{分工说明}
+	
+	\begin{itemize}
+		\item 毛东巍：计算并绘制图\ref{ColdPlasma}，并撰写第2节相关内容；
+		\item 张建： 计算并绘制图\ref{Friedrich}，并撰写第1节相关内容；
+		\item 钟志辉： 计算并绘制图\ref{FShock}，撰写第3节相关内容，整理修改全文内容，并进行排版
+	\end{itemize}
+	特此说明：以上分工仅以姓名拼音为序。
+	
 	\section{附件}
 	
 	\begin{itemize}
@@ -157,15 +195,18 @@
 		\item
 		assign1.pdf--本报告PDF输出文件
 		\item
-		assign1.pro--文中图\ref{Fig:1}例子所用的IDL计算和图形绘制程序
+		figure.py--文中第一节图\ref{Friedrich}所用的Python计算和图形绘制程序
 		\item
-		plot1.eps--图\ref{Fig:1}的EPS图形文件, 由IDL程序生成的PS格式图形文件
+		figure1.eps--图\ref{Friedrich}的EPS图形文件, 由Python程序生成的PS格式图形文件
 		\item
-		Friedrich.pdf--图\ref{Friedrich}的PDF图形文件, 由IDL生成的数据使用\LaTeX 的绘图宏包生成
+		figure2.pro--文中第二节图\ref{ColdPlasma}所用的IDL计算和图形绘制程序
+		\item 
+		figure2\_1.eps和figure2\_2.eps--图\ref{ColdPlasma}的EPS图形文件,由IDL程序生成的PS格式图形文件.
 		\item
-		coldp\_2\_0.eps和coldp\_0\_5.eps--图\ref{ColdPlasma}的EPS图形文件, 由IDL程序生成的PS格式图形文件做边界调整而成, 默认边界是坐标轴(含坐标其他元素, 刻度, 标题等等)围起来的区域. 因为角度的注释跑到边界外面了, 直接插进来这一部分不能全部显示出来.
-		\item
-		FShock.eps--图\ref{FShock}的EPS图形文件, 由IDL生成并使用\LaTeX 加注其中的公式生成, 并调整了边界(EPS文件头)
+		figure3.pro--文中第三节图\ref{FShock}所用的IDL计算和图形绘制程序
+		\item 
+		FShock.pdf--图\ref{FShock}的EPS图形文件,由IDL生成无公式图形，调整了边框后，使用
+		\LaTeX 加注其中的公式生成.
 		\item
 		References.bib -- 文献文件
 	\end{itemize}
