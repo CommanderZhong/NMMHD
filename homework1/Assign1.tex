@@ -19,10 +19,10 @@
 	\renewcommand{\abstractname}{摘要}
 	\def\due{2019年9月25日周三0:00}
 	
-	\title{磁流体力学数值模拟方法－第一次作业\footnote{2019秋季中国科学技术大学研究生课程《磁流体力学的数值模拟方法》}}
+	\title{磁流体力学数值模拟方法——第一次作业\footnote{2019秋季中国科学技术大学研究生课程《磁流体力学的数值模拟方法》}}
 	
 	
-	\author{毛东巍\footnote{Email: mdw97@mail.ustc.edu.cn}\quad 钟志辉\footnote{Email: zzhustc@mail.ustc.edu.cn}\quad 张建\footnote{Email: zj250711@mail.ustc.edu.cn}}
+	\author{毛东巍\footnote{Email: mdw97@mail.ustc.edu.cn}\quad 张建\footnote{Email: zj250711@mail.ustc.edu.cn}\quad 钟志辉\footnote{Email: zzhustc@mail.ustc.edu.cn}}
 	
 	\date{%
 		\scriptsize%
@@ -37,7 +37,7 @@
 	\maketitle
 	
 	\begin{abstract}
-		本工作为《磁流体力学的数值模拟方法》的第一次作业，主要是简单训练了大家的作图能力。本次作业将根据讲义上的磁流体力学中快慢磁声波，Alven波的特征速度的方程画出特征速度的在相空间的图形；根据磁化冷等离子体的色散关系方程画出单成分不同传播方向角的色散关系图；还将画图分析磁流体力学快磁声激波关系.
+		本工作为《磁流体力学的数值模拟方法》的第一次作业，主要是简单训练了大家的作图能力。本次作业将根据讲义上的磁流体力学中快慢磁声波，Alven波的特征速度的方程画出特征速度的在相空间的图形；根据磁化冷等离子体的色散关系方程画出单成分不同传播方向角的色散关系图；还画图分析了磁流体力学快磁声激波关系.
 	\end{abstract}
 	
 	\section{磁流体力学波的相速度图}
@@ -105,33 +105,37 @@
 	\section{磁流体力学快磁声激波关系}
 	
 	\begin{figure}[htb]
-		\centering \large
-		\begin{overpic}[scale=0.9]{figure3.pdf}
-			\put(5,40){$\mathbf{\frac{X^{\pm}_f}{H_f}}$}
-			\put(60,60){$\frac{X^{+}_f}{H_f}$}
-			\put(75,35){$\frac{X^{-}_f}{H_f}$}
-			\put(70,26){$\frac{X^{+}_f}{H_f}$}
-			\put(9,5){$0$}
-			\put(50,4){$\mathbf{h_f}$}
-			\put(67,4){$\hat{h_f}$}
-			\put(88,4){$\hat{\hat{h_f}}$}
-			\put(92,23){$\frac{\left[1+s_{0}(\gamma-1)\right] \sin \theta_{0}}{\left(1-s_{0}\right)(\gamma-1)-\gamma \sin ^{2} \theta_{0}}$}
-			\put(-22,23){$\frac{\sqrt{\left(1-s_{0}\right)^{2}+4 s_{0} \sin ^{2} \theta_{0}}-\left(1-s_{0}\right)}{2 \sin \theta_{0}}$}
-			\put(12,26){\begin{turn}{4}
-					$s_{0} \geq 1-\gamma \sin ^{2} \theta_{0} /(\gamma-1)$
-				\end{turn}
-			}
-			\put(12,20){$s_{0} < 1-\gamma \sin ^{2} \theta_{0} /(\gamma-1)$}
-			\put(66,55){\begin{sideways}
-					$\rightarrow  \infty $
-				\end{sideways}
-			}
-			\put(6,23.5){\begin{turn}{7}
-					$\rightarrow$
-			\end{turn}}
-			\put(6,22.5){\begin{turn}{-7}
-					$\rightarrow$
-			\end{turn}}
+		\centering 
+		\begin{overpic}[width=0.6\textwidth]{figure3.pdf}
+			\begin{small}
+				\put(3,40){$\mathbf{\frac{X^{\pm}_f}{h_f}}$}
+				\put(58,60){$\frac{X^{+}_f}{h_f}$}
+				\put(75,35){$\frac{X^{-}_f}{h_f}$}
+				\put(68,26){$\frac{X^{+}_f}{h_f}$}
+				\put(8,4){$0$}
+				\put(50,4){$\mathbf{h_f}$}
+				\put(67,4){$\hat{h_f}$}
+				\put(88,4){$\hat{\hat{h_f}}$}
+				\put(92,23){$\frac{\left[1+s_{0}(\gamma-1)\right] \sin \theta_{0}}{\left(1-s_{0}\right)(\gamma-1)-\gamma \sin ^{2} \theta_{0}}$}
+				\put(12,26){\begin{turn}{10}
+						$s_{0} \geq 1-\gamma \sin ^{2} \theta_{0} /(\gamma-1)$
+					\end{turn}
+				}
+				\put(12,18){$s_{0} < 1-\gamma \sin ^{2} \theta_{0} /(\gamma-1)$}
+				\put(66,55){\begin{sideways}
+						$\rightarrow  \infty $
+					\end{sideways}
+				}
+				\put(5,23.5){\begin{turn}{5}
+						$\rightarrow$
+				\end{turn}}
+				\put(5,22.5){\begin{turn}{-9}
+						$\rightarrow$
+				\end{turn}}
+			\end{small}
+			\begin{footnotesize}
+				\put(-43,23){$\frac{\sqrt{\left(1-s_{0}\right)^{2}+4 s_{0} \sin ^{2} \theta_{0}}-\left(1-s_{0}\right)}{2 \sin \theta_{0}}$}
+			\end{footnotesize}
 		\end{overpic}
 		\caption{快磁声激波关系}\label{FShock}
 	\end{figure}
@@ -150,33 +154,39 @@
 		& R_X = B^2 + C(h_f + 2 s_0 \sin\theta_0) \qquad (\ge 0).
 	\end{align}
 	其中$\theta_0$为波传播方向和磁场方向的夹角 ($0^\circ \le \theta_0 \le 90^\circ$),
-	$\gamma=5/3$是多方指数. 讨论两种情况, 即$B$在$C$的零点
-	$$
-	\hat{B} \equiv B(\hat{h}_f) = \frac{\gamma}{\gamma-1} \sin^2\theta_0 - (1-s_0),
-	$$
-	大于等于和小于零的情况, 此处$\hat{h}_f$是$C=0$的根
-	\begin{align}
+	$\gamma=5/3$是多方指数. 根据上面$B, C, R_x$的表达式，有以下两种情况需要讨论, 即当$C=0$时，$B$大于零和小于零的情况。
+	$C=0$的根$\hat{h}_f$为：
+	\begin{align}\label{3_1}
 		\hat{h}_f = \left(\frac{2}{\gamma-1}\right) \sin\theta_0.
 	\end{align}
-	具体表现为$s_0$的条件
-	\begin{align}
+	代入$B$的表达式并进行上述两种情况的讨论，具体表现为$s_0$的条件
+	\begin{align}\label{3_2}
 		s_0 \ge 1 - \gamma \frac{\sin^2\theta_0}{(\gamma-1)},
 	\end{align}
 	和
-	\begin{align}
+	\begin{align}\label{3_3}
 		s_0 < 1 - \gamma \frac{\sin^2\theta_0}{(\gamma-1)}.
 	\end{align}
-	而$\hat{\hat{h}}_f$是$R_X = 0$的根,
-	\begin{align}
+	对于$R_X = 0$，它的根$\hat{\hat{h}}_f$为：
+	\begin{align}\label{3_4}
 		& \hat{\hat{h}}_f = \frac{1}{2(\gamma-1) - \frac{1}{2} \gamma^2 \sin^2
 			\theta_0}\Big\{\sin\theta_0
 		(2-\gamma)(1+s_0) \nonumber
 		\\
 		& \quad + 2\cos\theta_0 \sqrt{(\gamma-1)(1-s_0)^2 + s_0 \gamma^2 \sin^2\theta_0}\Big\}.
 	\end{align}
-	将关系(\ref{Eqn:fShock})用图形表示
-	(可取$\theta_0$的某个典型值进行分析, 如$\theta_0=15^\circ$),
-	并参考图\ref{FShock}或文献\citet{Jeffrey1964}第229页中的图形以进行比较.
+	
+	根据上述分析，考虑率到$\frac{X^{\pm}_f}{h_f}\ge 0$, 快磁声激波关系曲线将分为三段, 分别为：
+	\begin{itemize}
+		\item 满足式(\ref{3_2}), $h_f<\hat{h_f}$, $X^{\pm}_f$取$X^+_f$;
+		\item 满足式(\ref{3_3}), $h_f\le \hat{\hat{h_f}}$, $X^{\pm}_f$取$X^+_f$;
+		\item 满足式(\ref{3_3}), $\hat{h_f}<h_f\le \hat{\hat{h_f}}$, $X^{\pm}_f$取$X^-_f$.
+	\end{itemize}
+
+	为了便于分析，取$\theta_0=15^\circ$这个典型值，最终可以将关系(\ref{Eqn:fShock})用图
+	\ref{FShock}表示. 图中, 实线和虚线为快磁声激波关系曲线，点虚线为各个临界条件的渐近线.
+	
+	关于这个工作的后续, 我们可以选取多个不同的有代表性的$\theta_0$的值进行分析, 把它们的快磁声激波关系曲线画在一张图上, 进而可以分析不同$\theta_0$的影响.
 
 	\section{分工说明}
 	
@@ -205,7 +215,7 @@
 		\item
 		figure3.pro--文中第三节图\ref{FShock}所用的IDL计算和图形绘制程序
 		\item
-		FShock.pdf--图\ref{FShock}的EPS图形文件,由IDL生成无公式图形，调整了边框后，使用
+		figure3.pdf--图\ref{FShock}的pdf图形文件,由IDL生成无公式图形，调整了边框后，使用
 		\LaTeX 加注其中的公式生成.
 		\item
 		References.bib -- 文献文件
