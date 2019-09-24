@@ -1,6 +1,6 @@
 
 \documentclass[landscape]{article}
-    
+
 \usepackage{ctex}
 \usepackage{amsmath}
 \usepackage{graphicx}
@@ -45,26 +45,49 @@
     \begin{figure}[htb]
 		\centering
 		\includegraphics[width=\textwidth]{figure1.eps}
-		\caption{表面法相速度图示：其中 (a) $s = 0.5$, (b) $s=1$, (c) $s=2$.}\label{Friedrich}
+		\caption{the diagram for the phase speeds of waves with (a) $s = 0.5$, (b) $s=1$, (c) $s=2$.$f$ represents Fast mode $c_f$, $s$ represents Slow mode $c_s$, $t$ represents Alfven mode $c_f$,}\label{Friedrich}
 	\end{figure}
 	
-	磁流体力学中, 快慢磁声波, 横波(Alfven)波的特征速度分别为\citep{Jeffrey1964}
-	\begin{align}
-		c_f =& \left\{\frac{1}{2} \left[a^2 + b^2 + \sqrt{(a^2 + b^2)^2 - 4 a^2 b^2
+	磁流体力学中, 快慢磁声波, 横波(Alfven波）的特征速度分别为\citep{Jeffrey1964}
+    \begin{align}
+        c_f =& \left\{\frac{1}{2} \left[a^2 + b^2 + \sqrt{(a^2 + b^2)^2 - 4 a^2 b^2
 			\cos^2\theta}\right]\right\}^{1/2},
 		\\
 		c_s =& \left\{\frac{1}{2} \left[a^2 + b^2 - \sqrt{(a^2 + b^2)^2 - 4 a^2 b^2
 			\cos^2\theta}\right]\right\}^{1/2},
 		\\
 		b_n =& b \left|\cos\theta\right|.
-	\end{align}
+    \end{align}
+	
 	其中, $a$是声速, $a^2 = \partial p / \partial \rho$, $p$和$\rho$是流体的压力和密度;
 	$b$是Alfven波速, $b^2 = \mu H^2 / 4 \pi \rho$. $\boldsymbol{H}$是磁场, $\mu$是磁导率;
 	$\theta$为传播方向和磁场所成夹角.
 	
-	熟悉所使用的作业工具和相应软件, 将以上公式中$c_f$, $c_s$,
-	$b_n$和$\theta$的关系用图形表示(极坐标形式)，比较和分析图形曲线中所含的物理概念和参数的特性.
-	结果要求能将所有的物理特性或者典型情况涵盖. 可以参考图\ref{Friedrich}或文献\citet{Jeffrey1964}中已有的图形.
+    将等式无量纲化，即两边同时除以Alfven波速b，得到
+    \begin{align}
+		\frac{c_f}{b} =& \left\{\frac{1}{2} \left[1 + s + \sqrt{(1 + s)^2 - 4 s
+			\cos^2\theta}\right]\right\}^{1/2},
+		\\
+		\frac{c_s}{b} =& \left\{\frac{1}{2} \left[1 + s - \sqrt{(1 + s)^2 - 4 s
+			\cos^2\theta}\right]\right\}^{1/2},
+		\\
+		\frac{b_n}{b} =& \left|\cos\theta\right|.
+	\end{align}	
+
+    其中，$s=a^2/b^2$.分别取$s=0.5,1.0,2.0$代表Alfven波速小于，等于，大于声速，以此得到图\ref{Friedrich}.
+    
+    图\ref{Friedrich}中，Alfven波模$b_n$为两个绿色的直径为$b$的两个圆；快磁声波模$c_f$为Alfven波模外侧蓝线部分；慢磁声波模$c_s$为Alfven波模内侧红色部分.
+    可以发现，在平行于磁场$\boldsymbol{H}$的方向上，
+    \begin{align}
+      c_f = & \max\left[a , b\right] \\
+      c_s = & \min\left[a , b\right]
+    \end{align}
+    在平行于磁场$\boldsymbol{H}$的方向上，
+    \begin{align}
+      c_f = & \sqrt{a^2 + b^2} \\
+      c_s = & 0
+    \end{align}
+    
 	
 	
 	\section{冷等离子体中的色散关系}
