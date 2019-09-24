@@ -35,15 +35,19 @@ for s in [0.5,1.0,2.0]:
     
     plt.axis('off')
     nmark=theta.size/8
+
     plt.text(theta[nmark],cfob[nmark]+0.02,'f',fontsize=15)
     plt.text(theta[nmark],csob[nmark]-0.3,'s',fontsize=15)
     plt.text(theta[nmark],bnob[nmark]+0.02,'t',fontsize=15)
-    plt.text(-np.pi/15,1,'1',fontsize=15)
-    plt.text(-np.pi/30,2,'H',fontsize=15)
+    plt.text(-np.pi/15,1-0.05,'$b$',fontsize=15)
+    plt.text(np.pi/2,cfob[nmark*2]-0.05,'$(a^2+b^2)^1/2$',fontsize=15)
+    plt.text(-np.pi/30,2,'H',fontdict={'size':17,'weight':'medium'})
     plt.text(np.pi/36,1.7,r'$\theta$',fontsize=15)
     plt.text(-np.pi/1.90,2.05,titles[fig-2],fontsize=15)
+    
 
     plt.annotate("",xy=(0,2),xytext=(np.pi,2),arrowprops=dict(arrowstyle="-|>"))
+    plt.annotate("",xy=(np.pi/2,2),xytext=(-np.pi/2,2),arrowprops=dict(arrowstyle="-|>"))
     plt.annotate("",xy=(np.pi/11.5,1.5),xytext=(np.pi/24,1.6),arrowprops=dict(arrowstyle="->"))
     plt.annotate("",xy=(-0.01,1.5),xytext=(np.pi/24,1.6),arrowprops=dict(arrowstyle="->"))
 
