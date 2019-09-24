@@ -1,6 +1,6 @@
 
-\documentclass{article}
-
+\documentclass[landscape]{article}
+    
 \usepackage{ctex}
 \usepackage{amsmath}
 \usepackage{graphicx}
@@ -41,6 +41,12 @@
 	\end{abstract}
 	
 	\section{磁流体力学波的相速度图}
+
+    \begin{figure}[htb]
+		\centering
+		\includegraphics[width=\textwidth]{figure1.eps}
+		\caption{表面法相速度图示：其中 (a) $s = 0.5$, (b) $s=1$, (c) $s=2$.}\label{Friedrich}
+	\end{figure}
 	
 	磁流体力学中, 快慢磁声波, 横波(Alfven)波的特征速度分别为\citep{Jeffrey1964}
 	\begin{align}
@@ -59,11 +65,7 @@
 	熟悉所使用的作业工具和相应软件, 将以上公式中$c_f$, $c_s$,
 	$b_n$和$\theta$的关系用图形表示(极坐标形式)，比较和分析图形曲线中所含的物理概念和参数的特性.
 	结果要求能将所有的物理特性或者典型情况涵盖. 可以参考图\ref{Friedrich}或文献\citet{Jeffrey1964}中已有的图形.
-	\begin{figure}[htb]
-		\centering
-		\includegraphics[width=\textwidth]{figure1.eps}
-		\caption{表面法相速度图示：其中 (a) $s = 0.5$, (b) $s=1$, (c) $s=2$.}\label{Friedrich}
-	\end{figure}
+	
 	
 	\section{冷等离子体中的色散关系}
 	
@@ -105,7 +107,7 @@
 	\section{磁流体力学快磁声激波关系}
 	
 	\begin{figure}[htb]
-		\centering 
+		\centering
 		\begin{overpic}[width=0.6\textwidth]{figure3.pdf}
 			\begin{small}
 				\put(3,40){$\mathbf{\frac{X^{\pm}_f}{h_f}}$}
