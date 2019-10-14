@@ -78,4 +78,29 @@ fig.SAVE,'fig2_1_'+STRMID(STRING(t0/0.25),6,1)+'.pdf',resolution=512,/TRANSPAREN
 fig.CLOSE
 
 ;*******Lax-Wendroff************
+
+c=0.95/MAX(u)
+dt=c*dx
+nt=ROUND(1./dt)+2
+t=INDGEN(nt)*dt
+FOR n=0,nt-2 DO BEGIN
+  FOR j=0,num-1 DO BEGIN
+    IF (j LE 1) or (j EQ num-1) THEN BEGIN
+      u[j,n+1]=1.8
+    ENDIF ELSE BEGIN
+      u[j,n+1]=u[j,n]-c*u[j,n]*(u[j+1,n]-u[j-1,n])/2+0.5*c^2*((u[j+1,n]+u[j,n])^2*(u[j+1,n]-u[j,n])/4-(u[j,n]+u[j-1,n])^2*(u[j,n]-u[j-1,n])/4)
+    ENDELSE
+  ENDFOR
+ENDFOR
+
+k=(t0/dt)
+k1=(t0/dt1)
+
+fig1=PLOT(x,u[*,0],YRANGE=[0.8,2.5],XRANGE=[-1.0,2.0],':',TITLE='Time='+STRMID(STRING(k*dt),5,6)+'/  Lax-Wendroff')
+fig1=PLOT(x,u[*,ROUND(k)],'--',/OVERPLOT,/CURR)
+fig1.SYMBOL='o'
+fig1.SYM_SIZE=1.2
+fig1=PLOT(x,u1[*,ROUND(k1)],/OVERPLOT,/CURR)
+fig1.SAVE,'fig2_2_'+STRMID(STRING(t0/0.25),6,1)+'.pdf',resolution=512,/TRANSPARENT
+fig1.CLOSE
 END
