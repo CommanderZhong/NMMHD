@@ -136,10 +136,12 @@ def minmodd(nx,c,t):
         else:
             
             for j in np.arange(nx):
-                if j==0 or j==nx-1:
+                if j==0 or j==1 or j==nx-1:
                     pass
                 else:
-                    ut[i,j]= ut[i-1,j] - dt/dx*(ut[i-1,j] - ut[i-1,j-1]) + 0.5*dt/dx*(dx-dt)*(minmod((ut[i-1,j] - ut[i-1,j-1])/dx,(ut[i-1,j+1] - ut[i-1,j])/dx))
+                    sigma1=minmod((ut[i-1,j] - ut[i-1,j-1])/dx,(ut[i-1,j+1] - ut[i-1,j])/dx)
+                    sigma2=minmod((ut[i-1,j] - ut[i-1,j-1])/dx,(ut[i-1,j-1] - ut[i-1,j-2])/dx)
+                    ut[i,j]= ut[i-1,j] - dt/dx*(ut[i-1,j] - ut[i-1,j-1]) + 0.5*dt/dx*(dx-dt)*(sigma1-sigma2)
 
     plt.plot(x,ut[nt-1,:],'k--')
     plt.scatter(x,ut[nt-1,:],facecolors='none',edgecolors='k',s=50)
