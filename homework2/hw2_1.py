@@ -58,7 +58,7 @@ def upwind(nx,c,t):
             
             for j in np.arange(nx):
                 if j==0 :
-                    pass
+                    ut[i,j]= ut[i-1,j]
                 else:
                     ut[i,j]= ut[i-1,j] - dt/dx*(ut[i-1,j] - ut[i-1,j-1])
 
@@ -73,37 +73,18 @@ def upwind(nx,c,t):
     pass
 
 def minmod(a,b):
-    if np.abs(a)<np.abs(b) and a*b>0:
+    if np.abs(a)<=np.abs(b) and a*b>0:
         x=a
     elif np.abs(a)>np.abs(b) and a*b>0:
         x=b
-    else:
+    elif a*b<=0:
         x=0
 
     return x
 
 def minmodd(nx,c,t):
 
-    dx=3.0/nx 
-    dt=c*dx
-    nt=int(round(t/dt))
-    # t=nt*dt-dt
-    
-    x=np.arange( -1.0 , 2.0 , dx ) 
 
-    u=np.zeros( nx )
-    for i in np.arange(nx):
-        if x[i] < -0.4 :
-            u[i]= 0.0
-        elif x[i] <-0.2 :
-            u[i]= 1.0 - np.abs( x[i] + 0.3 )/0.1
-        elif x[i] < -0.1 :
-            u[i]= 0.0
-        elif x[i] < -0.0 :
-            u[i]= 1.0
-        else :
-            u[i]= 0.0
-    
     #analytic solution
     nx_ture=5000
     dx_ture=3.0/nx_ture 
@@ -127,6 +108,30 @@ def minmodd(nx,c,t):
 
     plt.plot(x_ture+t,u_ture,'b-')
 
+
+    c=0.95/max(u_ture)
+    dx=3.0/nx 
+    dt=c*dx
+    nt=int(round(t/dt))
+    # t=nt*dt-dt
+    
+    x=np.arange( -1.0 , 2.0 , dx ) 
+
+    u=np.zeros( nx )
+    for i in np.arange(nx):
+        if x[i] < -0.4 :
+            u[i]= 0.0
+        elif x[i] <-0.2 :
+            u[i]= 1.0 - np.abs( x[i] + 0.3 )/0.1
+        elif x[i] < -0.1 :
+            u[i]= 0.0
+        elif x[i] < -0.0 :
+            u[i]= 1.0
+        else :
+            u[i]= 0.0
+    
+    
+
     #numerical solution
     ut=np.zeros((nt,nx))
 
@@ -136,8 +141,10 @@ def minmodd(nx,c,t):
         else:
             
             for j in np.arange(nx):
-                if j==0 or j==1 or j==nx-1:
-                    pass
+                if j==0 :
+                    ut[i,j]= ut[i-1,j]
+                elif j==1 or j==nx-1:
+                    ut[i,j]= ut[i-1,j] - dt/dx*(ut[i-1,j] - ut[i-1,j-1]) 
                 else:
                     sigma1=minmod((ut[i-1,j] - ut[i-1,j-1])/dx,(ut[i-1,j+1] - ut[i-1,j])/dx)
                     sigma2=minmod((ut[i-1,j] - ut[i-1,j-1])/dx,(ut[i-1,j-1] - ut[i-1,j-2])/dx)
@@ -207,8 +214,10 @@ def laxW(nx,c,t):
         else:
             
             for j in np.arange(nx):
-                if j==0 or j==nx-1:
-                    pass
+                if j==0 :
+                    ut[i,j]= ut[i-1,j]
+                elif j==nx-1:
+                    ut[i,j]= ut[i-1,j] 
                 else:
                     ut[i,j]= ut[i-1,j] - dt/dx*0.5*(ut[i-1,j+1] - ut[i-1,j-1]) + (dt/dx)**2*0.5*(ut[i-1,j+1] - 2*ut[i-1,j]+ ut[i-1,j-1])
 
@@ -279,8 +288,8 @@ def euler(nx,c,t,step):
         else:
             
             for j in np.arange(nx):
-                if j==nx-1 :
-                    pass
+                if j==nx-1 or j==0:
+                    ut[i+1,j]= ut[i,j]
                 else:
                     ut[i+1,j]= ut[i,j] - dt/dx*0.5*(ut[i,j+1] - ut[i,j-1])
 
@@ -304,7 +313,7 @@ if __name__ == "__main__":
 
     size=16
 
-    titles=['(a)','(b)','(c)','(d)']
+    titles=['(a)','(b)','(c)','(d)','(e)','(f)']
 
     #different nx[200,500,1000,2500] at c=0.95,
     nxs=np.array([200,500,1000,2500])
@@ -324,11 +333,18 @@ if __name__ == "__main__":
     cs=np.array([0.05,0.5,0.95,1.0])
     
     plt.figure(figsize=[size,size])
-    for i in np.arange(4):
-        
-        plt.subplot(2,2,i+1)
-        upwind(nx,cs[i],t)
-        plt.text(0.45,-0.35,titles[i],fontsize=15)
+    for i in np.arange(6):
+        plt.subplot(3,2,i+1)
+        if i==4:
+            laxW(nx,c,t)
+            plt.text(0.45,-0.35,titles[i],fontsize=15)
+        elif i==5:
+            minmodd(nx,c,t)
+            plt.text(0.45,-0.35,titles[i],fontsize=15)
+        else:   
+            
+            upwind(nx,cs[i],t)
+            plt.text(0.45,-0.35,titles[i],fontsize=15)
 
     plt.subplots_adjust(top = 0.95, bottom = 0.05, right = 0.95, left = 0.05)
     plt.savefig("hw2_1_c.eps")
