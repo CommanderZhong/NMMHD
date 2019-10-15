@@ -16,8 +16,8 @@ IF NOT KEYWORD_SET(t0) THEN t0=0.25
 IF NOT KEYWORD_SET(dx) THEN dx=0.02
 
 
-num=5./dx+1
-x=INDGEN(num)*dx-3
+num=3./dx+1
+x=INDGEN(num)*dx-1
 u=FLTARR(num,num)
 u[WHERE((x LT -0.8) OR (x GE 0.0)),0]=1.8
 u[WHERE((x GE -0.8) AND (x LT -0.3)),0]=1.4+0.4*COS(2*!PI*(x[WHERE((x GE -0.8) AND (x LT -0.3))]+0.8))
