@@ -2,10 +2,12 @@
 %,draft
 ]{article}
 
-\usepackage{CTEX}
+\usepackage{xeCJK}
 \usepackage{graphicx}
+
 \usepackage{amsmath}
 \usepackage{natbib}
+\setCJKmainfont{AR PL UKai CN}
 
 \begin{document}
 
@@ -16,7 +18,9 @@
 \title{一维气体激波管问题--第3次作业\footnote{2019年秋季《磁流体力学的数值模拟方法》}}
 
 \author{
-郑惠南\footnote{Email: hue@ustc.edu.cn}
+毛东巍\footnote{邮箱: mdw97@mail.ustc.edu.cn  学号: SA19007035}\quad 
+张建\footnote{邮箱: zj250711@mail.ustc.edu.cn  学号: SA19007060}\quad 
+钟志辉\footnote{邮箱: zzhustc@mail.ustc.edu.cn  学号: SA19007054}
 }
 
 \date{%
@@ -32,7 +36,7 @@
 
 \begin{abstract}
 讨论一维气体激波管问题的有限差分数值解法, 结合理论分析讨论该方程的物理解和数值解的特性,
-分析流体中不同波模的物理和数值特性, 请在\textbf{2019年11月1日周五0:00}前完成并提交. 另外, 在此之前, 即\textbf{10月29日周二课程时间}, 各组在课堂上报告一下作业完成进展情况.
+分析流体中不同波模的物理和数值特性.
 \end{abstract}
 
 \section{方程和初始条件}
@@ -85,13 +89,13 @@ p =& (\gamma - 1)(E - \frac{1}{2} \rho u^2).
     1.4275
     \end{array}\right]
 \end{align}
-设计两到三种有限差分格式, 编程进行数值计算, 给出图形, 比较和讨论结果.
+设计两种有限差分格式, 编程进行数值计算, 给出图形, 比较和讨论结果.
 
-作为参考, 这里给出三个算例, CFL 系数均取0.5, $t=0.14$ 时刻的数值的计算结果. 迎风格式, 261网格的数据如图\ref{Fig:Upwind}, TVD (Total Variation Diminishing) 格式\citep{vanLeer1974,Harten1983}, 133网格的数据如图\ref{Fig:vanLeerA}, 以及TVD格式, 261网格的数据如图\ref{Fig:vanLeerB}. 供大家参考.
+给出三个算例, CFL 系数均取0.5, $t=0.14$ 时刻的数值的计算结果. 迎风格式, 261网格的数据如图\ref{Fig:Upwind}, TVD (Total Variation Diminishing) 格式\citep{vanLeer1974,Harten1983}, 133网格的数据如图\ref{Fig:vanLeerA}, 以及TVD格式, 261网格的数据如图\ref{Fig:vanLeerB}. 供大家参考.
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=.85\textwidth]{GasUpwind261.eps}
+\includegraphics[width=.85\textwidth]{fig_tvd.pdf}
 \caption{迎风格式计算结果, 网格点数为 261. \textbf{从上到下分别是密度 $\rho$, 能量 $E$ 和质量流 $m = \rho u$.}
 其中点线是初值, 虚线 (上面的数据点用符号 $\circ$ 标注) 是 $t=0.14$ 时的数值结果, 实线是对应的真实解.}\label{Fig:Upwind}
 \end{center}
@@ -99,14 +103,14 @@ p =& (\gamma - 1)(E - \frac{1}{2} \rho u^2).
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=.85\textwidth]{GasvanLeer133.eps}
+\includegraphics[width=.85\textwidth]{fig_tvd.pdf}
 \caption{(van Leer) TVD 格式计算结果, 网格点数为 133. 其他标注同图\ref{Fig:Upwind}.}\label{Fig:vanLeerA}
 \end{center}
 \end{figure}
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=.85\textwidth]{GasvanLeer261.eps}
+\includegraphics[width=.85\textwidth]{fig_tvd.pdf}
 \caption{(van Leer) TVD 格式计算结果, 网格点数为 261. 其他标注同图\ref{Fig:Upwind}.}\label{Fig:vanLeerB}
 \end{center}
 \end{figure}
