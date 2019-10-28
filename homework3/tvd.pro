@@ -13,7 +13,7 @@ END
 FUNCTION V_aver,u,v
 ;; a smooth function V(u,v) for average of u and v
 
-  RETURN,2./(1./u+1./v)
+  RETURN,0.5*(u+v)
 END
 
 FUNCTION L_fun,u,a,gam,no
@@ -29,13 +29,14 @@ ENDIF
 IF no EQ 1 THEN BEGIN
   L[0]=2*(H-u^2)
   L[1]=2*u
-  L[2]=2
+  L[2]=-2
 ENDIF
 IF no EQ 2 THEN BEGIN
   L[0]=0.5*u*(u-2*a/(gam-1))
   L[1]=-(u-a/(gam-1))
   L[2]=1
 ENDIF
+L=L*(gam-1)/(2*a^2)
 RETURN,L
 END
 
@@ -143,13 +144,13 @@ IF no EQ 0 THEN BEGIN
     ENDELSE
   ENDFOR
   Q1=Q(v[*,1]+y,ep)
-  RETURN,0.5*(f0+f1)+1/2*c*TOTAL((g1+g0-Q1*alph[*,1])*R[*,1])
+  RETURN,0.5*(f0+f1)+1/(2*c)*TOTAL((g1+g0-Q1*alph[*,1])*R[*,1])
 ENDIF
 
 ;--------------mass------------------------
 IF no EQ 1 THEN BEGIN
-  f0=(gam-1)*E[j,n]+(3-gam)/2*m[j,n]^2/rho[j,n] ;f_j
-  f1=(gam-1)*E[j,n+1]+(3-gam)/2*m[j,n+1]^2/rho[j,n+1]  ;f_j+1
+  f0=(gam-1)*E[j,n]+(3-gam)*m[j,n]^2/2./rho[j,n] ;f_j
+  f1=(gam-1)*E[j+1,n]+(3-gam)*m[j+1,n]^2/2./rho[j+1,n]  ;f_j+1
   IF (j+2 LT num) AND (j GT 0) THEN BEGIN
     FOR d=0,2 DO BEGIN
       FOR k=1,3 DO BEGIN
@@ -209,13 +210,13 @@ IF no EQ 1 THEN BEGIN
     ENDELSE
   ENDFOR
   Q1=Q(v[*,1]+y,ep)
-  RETURN,0.5*(f0+f1)+1/2*c*TOTAL((g1+g0-Q1*alph[*,1])*R[*,1])
+  RETURN,0.5*(f0+f1)+1/(2*c)*TOTAL((g1+g0-Q1*alph[*,1])*R[*,1])
 ENDIF
 
 ;--------------energy-----------------------
 IF no EQ 2 THEN BEGIN
   f0=(gam*E[j,n]-(gam-1)/2*m[j,n]^2/rho[j,n])*m[j,n]/rho[j,n] ;f_j
-  f1=(gam*E[j,n+1]-(gam-1)/2*m[j,n+1]^2/rho[j,n+1])*m[j,n+1]/rho[j,n+1]  ;f_j+1
+  f1=(gam*E[j+1,n]-(gam-1)/2*m[j+1,n]^2/rho[j+1,n])*m[j+1,n]/rho[j+1,n]  ;f_j+1
   IF (j+2 LT num) AND (j GT 0) THEN BEGIN
     FOR d=0,2 DO BEGIN
       FOR k=1,3 DO BEGIN
@@ -275,6 +276,8 @@ IF no EQ 2 THEN BEGIN
     ENDELSE
   ENDFOR
   Q1=Q(v[*,1]+y,ep)
-  RETURN,0.5*(f0+f1)+1/2*c*TOTAL((g1+g0-Q1*alph[*,1])*R[*,1])
+  ;print,0.5*(f0+f1)+1./(2*c)*TOTAL((g1+g0-Q1*alph[*,1])*R[*,1]),j
+  ;print,0.5*(f0+f1),j
+  RETURN,0.5*(f0+f1)+1./(2*c)*TOTAL((g1+g0-Q1*alph[*,1])*R[*,1])
 ENDIF
 END
