@@ -4,9 +4,9 @@ PRO hw3_tvd
 gam=1.4   ;gamma
 WL=[[0.445],[0.311],[8.928]]
 WR=[[0.5],[0.0],[1.4275]]
-num=261L
+num=201L
 t0=0.14
-c=0.1  ;Courant coefficient
+c=0.1 ;Courant coefficient
 x=FINDGEN(num)/(num-1)*2-1    ;x from -1 to 1
 dx=2./(num-1)
 dt=dx*c
@@ -57,16 +57,13 @@ E1[WHERE(x GE 0.347)]=1.428                     ;from the Excel
 ;;Numerical solution with TVD scheme
 ;initial velocity
 u=FLTARR(num)
-u[WHERE(x LT 0)]=WL[0,1]/WL[0,0]
-u[WHERE(x GE 0)]=WR[0,1]/WL[0,0]
+u=m0/rho0
 ;initial pressure
 p=FLTARR(num)
-p[WHERE(x LT 0)]=(gam-1)*(WL[0,2]-0.5*WL[0,0]*u[WHERE(x LT 0)]^2)
-p[WHERE(x GE 0)]=(gam-1)*(WR[0,2]-0.5*WL[0,0]*u[WHERE(x GE 0)]^2)
+p=(gam-1)*(E0-0.5*rho0*u^2)
 ;initial acoustic
 a=FLTARR(num)
-a[WHERE(x LT 0)]=SQRT(gam*p[WHERE(x LT 0)]/WL[0,0])
-a[WHERE(x GE 0)]=SQRT(gam*p[WHERE(x GE 0)]/WR[0,0])
+a=SQRT(gam*p/rho0)
 ;density
 rho=FLTARR(num,nt)
 rho[*,0]=rho0
@@ -91,31 +88,25 @@ FOR n=0,nt-2 DO BEGIN
   u=m[*,n+1]/rho[*,n+1]
   p=(gam-1)*(E[*,n+1]-0.5*rho[*,n+1]*u^2)
   a=SQRT(gam*p/rho[*,n+1])
-  ;print,rho[*,n+1]
-  ;print,m[*,n+1]
-  
-  ;print,p
-  ;print,E[*,n+1]
-  ;print,(n+1)*dt
 ENDFOR
 
 ;;--------Plot and Save Image-----------------
 ;rho
-fig_tvd=PLOT(x,rho0,YTITLE='$\rho$',TITLE='Time=0.1400  /van Leer',YRANGE=[0.2,1.4],':',XTICKFORMAT='(A6)')
+fig_tvd=PLOT(x,rho0,YTITLE='Density',TITLE='Time=0.1400  /van Leer',YRANGE=[0.2,1.5],':',XTICKFORMAT='(A6)')
 fig_tvd.POSITION=[0.1,0.68,0.95,0.95]
 fig_tvd=PLOT(x,rho1,/OVERPLOT)
 fig_tvd=PLOT(x,rho[*,nt-1],/OVERPLOT,'--')
 fig_tvd.SYMBOL='o'
 fig_tvd.SYM_SIZE=1.2
 ;mass
-fig_tvd=PLOT(x,m0,XTITLE='x',YTITLE='m',YRANGE=[-0.5,2.5],':',/CURR)
+fig_tvd=PLOT(x,m0,XTITLE='x',YTITLE='Mass',YRANGE=[-0.5,2.5],':',/CURR)
 fig_tvd.POSITION=[0.1,0.08,0.95,0.34]
 fig_tvd=PLOT(x,m1,/OVERPLOT)
 fig_tvd=PLOT(x,m[*,nt-1],/OVERPLOT,'--')
 fig_tvd.SYMBOL='o'
 fig_tvd.SYM_SIZE=1.2
 ;energy
-fig_tvd=PLOT(x,E0,YTITLE='E',YRANGE=[0,10],':',/CURR,XTICKFORMAT='(A6)')
+fig_tvd=PLOT(x,E0,YTITLE='Energy',YRANGE=[0,10],':',/CURR,XTICKFORMAT='(A6)')
 fig_tvd.POSITION=[0.1,0.38,0.95,0.64]
 fig_tvd=PLOT(x,E1,/OVERPLOT)
 fig_tvd=PLOT(x,E[*,nt-1],/OVERPLOT,'--')
