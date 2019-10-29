@@ -35,26 +35,20 @@ L=L*(gam-1)/(2*a^2)
 RETURN,L
 END
 
-FUNCTION R_fun,u,a,gam,no
+FUNCTION R_fun,u,a,gam
 ;; Right eigenvectors computation
 
-R=FLTARR(3)
+R=FLTARR(3,3)
 H=a^2/(gam-1)+0.5*u^2
-IF no EQ 0 THEN BEGIN
-  R[0]=1
-  R[1]=u-a
-  R[2]=H-u*a
-ENDIF
-IF no EQ 1 THEN BEGIN
-  R[0]=1
-  R[1]=u
-  R[2]=0.5*u^2
-ENDIF
-IF no EQ 2 THEN BEGIN
-  R[0]=1
-  R[1]=u+a
-  R[2]=H+u*a
-ENDIF
+R[0,0]=1
+R[0,1]=u-a
+R[0,2]=H-u*a
+R[1,0]=1
+R[1,1]=u
+R[1,2]=0.5*u^2
+R[2,0]=1
+R[2,1]=u+a
+R[2,2]=H+u*a
 RETURN,R
 END
 
@@ -67,7 +61,7 @@ FUNCTION TVD,rho,m,E,u,p,a,n,j,gam,c,num,no
 a0=FLTARR(3,3)
 v=FLTARR(3,3)
 L=FLTARR(3,3,3)
-R=FLTARR(3,3)
+R=FLTARR(3,3,3)
 alph=FLTARR(3,3)
 g_p=FLTARR(3,3)
 s=FLTARR(3,3)
@@ -81,16 +75,14 @@ IF no EQ 0 THEN BEGIN
   f1=m[j+1,n]  ;f_j+1
   IF (j+2 LT num) AND (j GT 0) THEN BEGIN
     FOR d=0,2 DO BEGIN
-       a0[0:2,d]=V_aver(u[j-1+d]+([0:2]-1)*a[j-1+d],u[j+d]+([0:2]-1)*a[j+d])
-    ENDFOR
-    v=c*a0
-    FOR d=0,2 DO BEGIN
-      L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
-      alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
-                L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
-                L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
-      R[*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam,no),R_fun(u[j+d],a[j+d],gam,no))
-      g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
+       a0[0:2,d]=V_aver(u[j-1+d],u[j+d])+([0:2]-1)*V_aver(a[j-1+d],a[j+d])
+       v[*,d]=c*a0[*,d]
+       L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
+       alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
+         L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
+         L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
+       R[*,*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam),R_fun(u[j+d],a[j+d],gam))
+       g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
     ENDFOR
     s=SIGNUM(g_p)
     g0=s[*,1]*MAX([0,MIN([ABS(g_p[*,1]),g_p[*,0]*s[*,1]])]) ;g_j
@@ -98,16 +90,14 @@ IF no EQ 0 THEN BEGIN
   ENDIF
   IF j+2 EQ num THEN BEGIN
     FOR d=0,1 DO BEGIN
-      a0[0:2,d]=V_aver(u[j-1+d],u[j+d])+([0:2]-1)*V_aver(a[j-1+d],*a[j+d])
-    ENDFOR
-    v=c*a0
-    FOR d=0,1 DO BEGIN
-      L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
-      alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
-                L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
-                L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
-      R[*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam,no),R_fun(u[j+d],a[j+d],gam,no))
-      g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
+      a0[0:2,d]=V_aver(u[j-1+d],u[j+d])+([0:2]-1)*V_aver(a[j-1+d],a[j+d])
+       v[*,d]=c*a0[*,d]
+       L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
+       alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
+         L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
+         L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
+       R[*,*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam),R_fun(u[j+d],a[j+d],gam))
+       g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
     ENDFOR
     s=SIGNUM(g_p)
     g0=s[*,1]*MAX([0,MIN([ABS(g_p[*,1]),g_p[*,0]*s[*,1]])]) ;g_j
@@ -115,16 +105,14 @@ IF no EQ 0 THEN BEGIN
   ENDIF
   IF j EQ 0 THEN BEGIN
     FOR d=1,2 DO BEGIN
-      a0[0:2,d]=V_aver(u[j-1+d]+([0:2]-1)*a[j-1+d],u[j+d]+([0:2]-1)*a[j+d])
-    ENDFOR
-    v=c*a0
-    FOR d=1,2 DO BEGIN
-      L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
-      alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
-                L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
-                L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
-      R[*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam,no),R_fun(u[j+d],a[j+d],gam,no))
-      g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
+      a0[0:2,d]=V_aver(u[j-1+d],u[j+d])+([0:2]-1)*V_aver(a[j-1+d],a[j+d])
+       v[*,d]=c*a0[*,d]
+       L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
+       alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
+         L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
+         L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
+       R[*,*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam),R_fun(u[j+d],a[j+d],gam))
+       g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
     ENDFOR
     s=SIGNUM(g_p)
     g1=s[*,2]*MAX([0,MIN([ABS(g_p[*,2]),g_p[*,1]*s[*,2]])]) ;g_j+1
@@ -139,7 +127,7 @@ IF no EQ 0 THEN BEGIN
     ENDELSE
   ENDFOR
   Q1=Q(v[*,1]+y,ep)
-  RETURN,0.5*(f0+f1)+1/(2*c)*TOTAL((g1+g0-Q1*alph[*,1])*R[*,1])
+  RETURN,0.5*(f0+f1)+1/(2*c)*TOTAL((g1+g0-Q1*alph[*,1])*R[*,no,1])
 ENDIF
 
 ;--------------mass------------------------
@@ -148,16 +136,14 @@ IF no EQ 1 THEN BEGIN
   f1=(gam-1)*E[j+1,n]+(3-gam)*m[j+1,n]^2/2./rho[j+1,n]  ;f_j+1
   IF (j+2 LT num) AND (j GT 0) THEN BEGIN
     FOR d=0,2 DO BEGIN
-      a0[0:2,d]=V_aver(u[j-1+d]+([0:2]-1)*a[j-1+d],u[j+d]+([0:2]-1)*a[j+d])
-    ENDFOR
-    v=c*a0
-    FOR d=0,2 DO BEGIN
-      L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
-      alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
-                L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
-                L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
-      R[*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam,no),R_fun(u[j+d],a[j+d],gam,no))
-      g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
+      a0[0:2,d]=V_aver(u[j-1+d],u[j+d])+([0:2]-1)*V_aver(a[j-1+d],a[j+d])
+       v[*,d]=c*a0[*,d]
+       L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
+       alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
+         L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
+         L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
+       R[*,*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam),R_fun(u[j+d],a[j+d],gam))
+       g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
     ENDFOR
     s=SIGNUM(g_p)
     g0=s[*,1]*MAX([0,MIN([ABS(g_p[*,1]),g_p[*,0]*s[*,1]])]) ;g_j
@@ -165,16 +151,14 @@ IF no EQ 1 THEN BEGIN
   ENDIF
   IF j+2 EQ num THEN BEGIN
     FOR d=0,1 DO BEGIN
-      a0[0:2,d]=V_aver(u[j-1+d]+([0:2]-1)*a[j-1+d],u[j+d]+([0:2]-1)*a[j+d])
-    ENDFOR
-    v=c*a0
-    FOR d=0,1 DO BEGIN
-      L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
-      alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
-                L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
-                L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
-      R[*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam,no),R_fun(u[j+d],a[j+d],gam,no))
-      g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
+      a0[0:2,d]=V_aver(u[j-1+d],u[j+d])+([0:2]-1)*V_aver(a[j-1+d],a[j+d])
+       v[*,d]=c*a0[*,d]
+       L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
+       alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
+         L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
+         L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
+       R[*,*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam),R_fun(u[j+d],a[j+d],gam))
+       g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
     ENDFOR
     s=SIGNUM(g_p)
     g0=s[*,1]*MAX([0,MIN([ABS(g_p[*,1]),g_p[*,0]*s[*,1]])]) ;g_j
@@ -182,16 +166,14 @@ IF no EQ 1 THEN BEGIN
   ENDIF
   IF j EQ 0 THEN BEGIN
     FOR d=1,2 DO BEGIN
-      a0[0:2,d]=V_aver(u[j-1+d]+([0:2]-1)*a[j-1+d],u[j+d]+([0:2]-1)*a[j+d])
-    ENDFOR
-    v=c*a0
-    FOR d=1,2 DO BEGIN
-      L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
-      alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
-                L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
-                L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
-      R[*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam,no),R_fun(u[j+d],a[j+d],gam,no))
-      g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
+      a0[0:2,d]=V_aver(u[j-1+d],u[j+d])+([0:2]-1)*V_aver(a[j-1+d],a[j+d])
+       v[*,d]=c*a0[*,d]
+       L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
+       alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
+         L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
+         L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
+       R[*,*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam),R_fun(u[j+d],a[j+d],gam))
+       g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
     ENDFOR
     s=SIGNUM(g_p)
     g1=s[*,2]*MAX([0,MIN([ABS(g_p[*,2]),g_p[*,1]*s[*,2]])]) ;g_j+1
@@ -205,7 +187,7 @@ IF no EQ 1 THEN BEGIN
     ENDELSE
   ENDFOR
   Q1=Q(v[*,1]+y,ep)
-  RETURN,0.5*(f0+f1)+1/(2*c)*TOTAL((g1+g0-Q1*alph[*,1])*R[*,1])
+  RETURN,0.5*(f0+f1)+1/(2*c)*TOTAL((g1+g0-Q1*alph[*,1])*R[*,no,1])
 ENDIF
 
 ;--------------energy-----------------------
@@ -214,16 +196,14 @@ IF no EQ 2 THEN BEGIN
   f1=(gam*E[j+1,n]-(gam-1)/2*m[j+1,n]^2/rho[j+1,n])*m[j+1,n]/rho[j+1,n]  ;f_j+1
   IF (j+2 LT num) AND (j GT 0) THEN BEGIN
     FOR d=0,2 DO BEGIN
-      a0[0:2,d]=V_aver(u[j-1+d]+([0:2]-1)*a[j-1+d],u[j+d]+([0:2]-1)*a[j+d])
-    ENDFOR
-    v=c*a0
-    FOR d=0,2 DO BEGIN
-      L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
-      alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
-                L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
-                L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
-      R[*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam,no),R_fun(u[j+d],a[j+d],gam,no))
-      g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
+      a0[0:2,d]=V_aver(u[j-1+d],u[j+d])+([0:2]-1)*V_aver(a[j-1+d],a[j+d])
+       v[*,d]=c*a0[*,d]
+       L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
+       alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
+         L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
+         L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
+       R[*,*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam),R_fun(u[j+d],a[j+d],gam))
+       g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
     ENDFOR
     s=SIGNUM(g_p)
     g0=s[*,1]*MAX([0,MIN([ABS(g_p[*,1]),g_p[*,0]*s[*,1]])]) ;g_j
@@ -231,16 +211,14 @@ IF no EQ 2 THEN BEGIN
   ENDIF
   IF j+2 EQ num THEN BEGIN
     FOR d=0,1 DO BEGIN
-      a0[0:2,d]=V_aver(u[j-1+d]+([0:2]-1)*a[j-1+d],u[j+d]+([0:2]-1)*a[j+d])
-    ENDFOR
-    v=c*a0
-    FOR d=0,1 DO BEGIN
-      L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
-      alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
-                L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
-                L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
-      R[*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam,no),R_fun(u[j+d],a[j+d],gam,no))
-      g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
+      a0[0:2,d]=V_aver(u[j-1+d],u[j+d])+([0:2]-1)*V_aver(a[j-1+d],a[j+d])
+       v[*,d]=c*a0[*,d]
+       L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
+       alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
+         L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
+         L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
+       R[*,*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam),R_fun(u[j+d],a[j+d],gam))
+       g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
     ENDFOR
     s=SIGNUM(g_p)
     g0=s[*,1]*MAX([0,MIN([ABS(g_p[*,1]),g_p[*,0]*s[*,1]])]) ;g_j
@@ -248,16 +226,14 @@ IF no EQ 2 THEN BEGIN
   ENDIF
   IF j EQ 0 THEN BEGIN
     FOR d=1,2 DO BEGIN
-      a0[0:2,d]=V_aver(u[j-1+d]+([0:2]-1)*a[j-1+d],u[j+d]+([0:2]-1)*a[j+d])
-    ENDFOR
-    v=c*a0
-    FOR d=1,2 DO BEGIN
-      L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
-      alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
-                L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
-                L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
-      R[*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam,no),R_fun(u[j+d],a[j+d],gam,no))
-      g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
+      a0[0:2,d]=V_aver(u[j-1+d],u[j+d])+([0:2]-1)*V_aver(a[j-1+d],a[j+d])
+       v[*,d]=c*a0[*,d]
+       L[*,*,d]=V_aver(L_fun(u[j-1+d],a[j-1+d],gam),L_fun(u[j+d],a[j+d],gam))
+       alph[*,d]=L[0,*,d]*(rho[j+d,n]-rho[j-1+d,n])+$
+         L[1,*,d]*(m[j+d,n]-m[j-1+d,n])+$
+         L[2,*,d]*(E[j+d,n]-E[j-1+d,n])
+       R[*,*,d]=V_aver(R_fun(u[j-1+d],a[j-1+d],gam),R_fun(u[j+d],a[j+d],gam))
+       g_p[*,d]=0.5*(Q(v[*,d],ep)-v[*,d]^2)*alph[*,d]
     ENDFOR
     s=SIGNUM(g_p)
     g1=s[*,2]*MAX([0,MIN([ABS(g_p[*,2]),g_p[*,1]*s[*,2]])]) ;g_j+1
@@ -271,6 +247,6 @@ IF no EQ 2 THEN BEGIN
     ENDELSE
   ENDFOR
   Q1=Q(v[*,1]+y,ep)
-  RETURN,0.5*(f0+f1)+1./(2*c)*TOTAL((g1+g0-Q1*alph[*,1])*R[*,1])
+  RETURN,0.5*(f0+f1)+1./(2*c)*TOTAL((g1+g0-Q1*alph[*,1])*R[*,no,1])
 ENDIF
 END
