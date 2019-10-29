@@ -4,55 +4,67 @@ PRO hw3_tvd
 gam=1.4   ;gamma
 WL=[[0.445],[0.311],[8.928]]
 WR=[[0.5],[0.0],[1.4275]]
-num=201L
+num=401L
 t0=0.14
-c=0.1 ;Courant coefficient
+ul=4 ;max(u+a)
+CFL=0.5 ;CFL coefficient
 x=FINDGEN(num)/(num-1)*2-1    ;x from -1 to 1
 dx=2./(num-1)
-dt=dx*c
+dt=dx*CFL/ul
+c=dt/dx
 nt=t0/dt+1L
 
 ;;-----------Density-----------
 ;initial rho
 rho0=FLTARR(num)
 rho0[WHERE(x LT 0)]=WL[0,0]
-rho0[WHERE(x GE 0)]=WR[0,0]
+rho0[WHERE(x EQ 0)]=0.5*(WL[0,0]+WR[0,0])
+rho0[WHERE(x GT 0)]=WR[0,0]
 
 ;Analytical solution rho
 rho1=FLTARR(num)
 rho1[WHERE(x LT -0.369)]=WL[0,0]
-rho1[WHERE((x GE -0.369) AND (x LT -0.229))]=WL[0,0]-(WL[0,0]-0.345)/(0.369-0.229)*(x[WHERE((x GE -0.369) AND (x LT -0.229))]+0.369)  ;linear interpolation
-rho1[WHERE((x GE -0.229) AND (x LT 0.214))]=0.345 ;from the Excel
-rho1[WHERE((x GE 0.214) AND (x LT 0.347))]=1.304  ;from the Excel
-rho1[WHERE(x GE 0.347)]=0.500                     ;from the Excel
+rho1[WHERE((x GE -0.369) AND (x LE -0.229))]=WL[0,0]-(WL[0,0]-0.345)/(0.369-0.229)*(x[WHERE((x GE -0.369) AND (x LT -0.229))]+0.369)  ;linear interpolation
+rho1[WHERE((x GT -0.229) AND (x LT 0.214))]=0.345 ;from the Excel
+rho1[WHERE(x EQ 0.214)]=0.5*(0.345+1.304)
+rho1[WHERE((x GT 0.214) AND (x LT 0.347))]=1.304  ;from the Excel
+rho1[WHERE(x EQ 0.347)]=0.5*(0.5+1.304)
+rho1[WHERE(x GT 0.347)]=0.500                     ;from the Excel
 
 ;;-----------Mass Flux-----------
 ;initial m
 m0=FLTARR(num)
 m0[WHERE(x LT 0)]=WL[0,1]
-m0[WHERE(x GE 0)]=WR[0,1]
+m0[WHERE(x EQ 0)]=0.5*(WL[0,1]+WR[0,1])
+m0[WHERE(x GT 0)]=WR[0,1]
 
 ;Analytical solution m
 m1=FLTARR(num)
 m1[WHERE(x LT -0.369)]=WL[0,1]
-m1[WHERE((x GE -0.369) AND (x LT -0.229))]=WL[0,1]-(WL[0,1]-0.527)/(0.369-0.229)*(x[WHERE((x GE -0.369) AND (x LT -0.229))]+0.369)  ;linear interpolation
-m1[WHERE((x GE -0.229) AND (x LT 0.214))]=0.527 ;from the Excel
-m1[WHERE((x GE 0.214) AND (x LT 0.347))]=1.994  ;from the Excel
-m1[WHERE(x GE 0.347)]=0.                        ;from the Excel
+m1[WHERE((x GE -0.369) AND (x LE -0.229))]=WL[0,1]-(WL[0,1]-0.527)/(0.369-0.229)*(x[WHERE((x GE -0.369) AND (x LT -0.229))]+0.369)  ;linear interpolation
+m1[WHERE((x GT -0.229) AND (x LT 0.214))]=0.527 ;from the Excel
+m1[WHERE(x EQ 0.214)]=0.5*(0.527+1.994)
+m1[WHERE((x GT 0.214) AND (x LT 0.347))]=1.994  ;from the Excel
+m1[WHERE(x EQ 0.347)]=0.5*(1.994+0.)
+m1[WHERE(x GT 0.347)]=0.                        ;from the Excel
 
 ;;-----------Energy-----------
 ;initial E
 E0=FLTARR(num)
 E0[WHERE(x LT 0)]=WL[0,2]
-E0[WHERE(x GE 0)]=WR[0,2]
+E0[WHERE(x EQ 0)]=0.5*(WL[0,2]+WR[0,2])
+E0[WHERE(x GT 0)]=WR[0,2]
 
 ;Analytical solution E
 E1=FLTARR(num)
 E1[WHERE(x LT -0.369)]=WL[0,2]
-E1[WHERE((x GE -0.369) AND (x LT -0.229))]=WL[0,2]-(WL[0,2]-6.570)/(0.369-0.229)*(x[WHERE((x GE -0.369) AND (x LT -0.229))]+0.369)  ;linear interpolation
-E1[WHERE((x GE -0.229) AND (x LT 0.214))]=6.570 ;from the Excel
-E1[WHERE((x GE 0.214) AND (x LT 0.347))]=7.691  ;from the Excel
-E1[WHERE(x GE 0.347)]=1.428                     ;from the Excel
+E1[WHERE((x GE -0.369) AND (x LE -0.229))]=WL[0,2]-(WL[0,2]-6.570)/(0.369-0.229)*(x[WHERE((x GE -0.369) AND (x LT -0.229))]+0.369)  ;linear interpolation
+E1[WHERE((x GT -0.229) AND (x LT 0.214))]=6.570 ;from the Excel
+E1[WHERE(x EQ 0.214)]=0.5*(6.570+7.691)
+E1[WHERE((x GT 0.214) AND (x LT 0.347))]=7.691  ;from the Excel
+E1[WHERE(x EQ 0.214)]=0.5*(7.691+1.428)
+E1[WHERE(x GT 0.347)]=1.428                     ;from the Excel
+
 
 ;;Numerical solution with TVD scheme
 ;initial velocity
