@@ -4,7 +4,7 @@ PRO hw3_tvd
 gam=1.4   ;gamma
 WL=[[0.445],[0.311],[8.928]]
 WR=[[0.5],[0.0],[1.4275]]
-num=201L
+num=251L
 t0=0.14
 ul=4 ;max(u+a)
 CFL=0.8 ;CFL coefficient
@@ -104,7 +104,7 @@ ENDFOR
 
 ;;--------Plot and Save Image-----------------
 ;rho
-fig_tvd=PLOT(x,rho0,YTITLE='Density',TITLE='Time=0.1400  /van Leer',YRANGE=[0.2,1.5],':',XTICKFORMAT='(A6)')
+fig_tvd=PLOT(x,rho0,YTITLE='Density',TITLE='Time=0.1400  /van Leer  Nx='+STRMID(STRING(num),9,3)+'  CFL='+STRMID(STRING(CFL),5,4),YRANGE=[0.2,1.5],':',XTICKFORMAT='(A6)')
 fig_tvd.POSITION=[0.1,0.68,0.95,0.95]
 fig_tvd=PLOT(x,rho1,/OVERPLOT)
 fig_tvd=PLOT(x,rho[*,nt-1],/OVERPLOT,'--')
