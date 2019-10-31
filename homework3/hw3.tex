@@ -92,35 +92,35 @@ p =& (\gamma - 1)(E - \frac{1}{2} \rho u^2).
 本文使用了两种有限差分格式,Lax-wendroff格式和TVD格式, 进行数值计算, 比较和讨论了不同格式和不同网格密度下的结果.
 
 \section{结果与分析}
-为了分析不同格式和不同网格密度下的结果, 本文给出四个算例, CFL 系数均取0.5, $t=0.14$ 时刻的数值的计算结果. Lax-Wendroff格式, 133网格的数据如图\ref{Fig:LaxA}, Lax-Wendroff格式, 261网格的数据如图\ref{Fig:LaxB}, TVD (Total Variation Diminishing) 格式\citep{vanLeer1974,Harten1983}, 133网格的数据如图\ref{Fig:vanLeerA}, 以及TVD格式, 261网格的数据如图\ref{Fig:vanLeerB}. 供大家参考.
+为了分析不同格式和不同网格密度下的结果, 本文给出四个算例, Lax-Wendroff格式和TVD格式的CFL 系数均取0.8, $t=0.14$ 时刻的数值的计算结果. Lax-Wendroff格式, 300网格的数据如图\ref{Fig:LaxA}, Lax-Wendroff格式, 600网格的数据如图\ref{Fig:LaxB}, TVD (Total Variation Diminishing) 格式\citep{vanLeer1974,Harten1983}, 251网格的数据如图\ref{Fig:vanLeerA}, 以及TVD格式, 501网格的数据如图\ref{Fig:vanLeerB}. 从四个算例的对比中, 可以看到Lax-Wendroff格式存在色散, 而TVD格式不存在色散, 计算过程中网格密度取得越大, 间断的宽度越小.
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=.85\textwidth]{fig_tvd.pdf}
-\caption{Lax-Wendroff格式计算结果, 网格点数为 133. \textbf{从上到下分别是密度 $\rho$, 能量 $E$ 和质量流 $m = \rho u$.}
+\includegraphics[width=.85\textwidth]{hw3_lax_300.eps}
+\caption{Lax-Wendroff格式计算结果, 网格点数为 300. \textbf{从上到下分别是密度 $\rho$, 能量 $E$ 和质量流 $m = \rho u$.}
 其中点线是初值, 虚线 (上面的数据点用符号 $\circ$ 标注) 是 $t=0.14$ 时的数值结果, 实线是对应的真实解.}\label{Fig:LaxA}
 \end{center}
 \end{figure}
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=.85\textwidth]{fig_tvd.pdf}
-\caption{Lax-Wendrof格式计算结果, 网格点数为 261. 
+\includegraphics[width=.85\textwidth]{hw3_lax_600.eps}
+\caption{Lax-Wendrof格式计算结果, 网格点数为 600. 
 其他标注同图\ref{Fig:LaxA}.}\label{Fig:LaxB}
 \end{center}
 \end{figure}
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=.85\textwidth]{fig_tvd.pdf}
-\caption{(van Leer) TVD 格式计算结果, 网格点数为 133. 其他标注同图\ref{Fig:LaxA}.}\label{Fig:vanLeerA}
+\includegraphics[width=.85\textwidth]{fig_tvd_1.pdf}
+\caption{(van Leer) TVD 格式计算结果, 网格点数为 251. 其他标注同图\ref{Fig:LaxA}.}\label{Fig:vanLeerA}
 \end{center}
 \end{figure}
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=.85\textwidth]{fig_tvd.pdf}
-\caption{(van Leer) TVD 格式计算结果, 网格点数为 261. 其他标注同图\ref{Fig:LaxA}.}\label{Fig:vanLeerB}
+\includegraphics[width=.85\textwidth]{fig_tvd_2.pdf}
+\caption{(van Leer) TVD 格式计算结果, 网格点数为 501. 其他标注同图\ref{Fig:LaxA}.}\label{Fig:vanLeerB}
 \end{center}
 \end{figure}
 
@@ -128,40 +128,40 @@ p =& (\gamma - 1)(E - \frac{1}{2} \rho u^2).
 \subsection{Lax-Wendroff格式}
 对于守恒型方程，
 \begin{align}
-\frac{\partial u}{\partial t} + \frac{\partial F}{\partial x} = 0,
+\frac{\partial w}{\partial t} + \frac{\partial F}{\partial x} = 0,
 \end{align}
 其Lax-Wendroff格式为
 \begin{align}
-u_j^{n+1} =& u_j^n - \frac{\Delta t}{2\Delta x} (F_{j+1}^n - F_{j-1}^n) \nonumber\\
+w_j^{n+1} =& w_j^n - \frac{\Delta t}{2\Delta x} (F_{j+1}^n - F_{j-1}^n) \nonumber\\
 & + \frac{\Delta t^2}{2\Delta x^2} \left[A_{j+1/2}^n (F_{j+1}^n-F_j^n) - A_{j-1/2}^n (F_j^n -
 F_{j-1}^n)\right]
 \end{align}
-其中$A = \frac{\partial F}{\partial u}$, $A$的表达式见第\ref{Appendix}节.
+其中$A = \frac{\partial F}{\partial w}$, $A$的表达式见第\ref{Appendix}节.
 \begin{align}
-A_{j \pm 1/2}^n = A(u_{j \pm 1/2}^n), \qquad u_{j \pm 1/2}^n = \frac{1}{2} (u_j^n + u_{j \pm 1}^n)
+A_{j \pm 1/2}^n = A(w_{j \pm 1/2}^n), \qquad w_{j \pm 1/2}^n = \frac{1}{2} (w_j^n + w_{j \pm 1}^n)
 \end{align}
 
 \subsection{TVD格式}
 方程
 \begin{align}
-\frac{\partial u}{\partial t}+\frac{\partial f}{\partial x}+h=0,
+\frac{\partial w}{\partial t}+\frac{\partial f}{\partial x}+h=0,
 \end{align}
-令$v_{j+1/2} = V(v_j, v_{j+1})$为$v_j$和$v_{j+1}$的平均值, 
-且$\Delta_{j+1/2}v = v_{j+1} - v_j$在坐标空间$\left\{R^k \left(v_{j+1/2}\right)\right\}$的各个分量为$\alpha^{k} _{j+1/2}$
+令$w_{j+1/2} = V(w_j, w_{j+1})$为$w_j$和$w_{j+1}$的平均值, 
+且$\Delta_{j+1/2}w = w_{j+1} - w_j$在坐标空间$\left\{R^k \left(w_{j+1/2}\right)\right\}$的各个分量为$\alpha^{k} _{j+1/2}$
 \begin{align}
-\Delta_{j+1/2}v =& \sum_k \alpha^{k}_{j+1/2} R^{k}_{j+1/2},\\
-\alpha^{k}_{j+1/2} =& L^{k}_{j+1/2} \Delta_{j+1/2}v.
+\Delta_{j+1/2}w =& \sum_k \alpha^{k}_{j+1/2} R^{k}_{j+1/2},\\
+\alpha^{k}_{j+1/2} =& L^{k}_{j+1/2} \Delta_{j+1/2}w.
 \end{align}
 矩阵$A$的特征值为 $u-a$, $u$, $u+a$ ($a^2 = \gamma p/\rho$) 和相应的左右特征向量矩阵为 $L$ 和 $R$, 这里$R$和$L$的表达式见第\ref{Appendix}节.
 方程的TVD格式为\citep{Harten1983}
 \begin{align}
-v_{j}^{n+1}=&v_{j}^{n}-\lambda\left(\bar{f}_{j+1 / 2}^{n}-\bar{f}_{j-1 / 2}^{n}\right)-\Delta t h_{j}^{n}
+w_{j}^{n+1}=&w_{j}^{n}-\lambda\left(\bar{f}_{j+1 / 2}^{n}-\bar{f}_{j-1 / 2}^{n}\right)-\Delta t h_{j}^{n}
 \\
 \bar{f}_{1+1 / 2}=&
-\frac{1}{2}\left[f\left(v_{j}\right)+f\left(v_{j+1}\right)\right] \nonumber
+\frac{1}{2}\left[f\left(w_{j}\right)+f\left(w_{j+1}\right)\right] \nonumber
 \\ &+\frac{1}{2 \lambda} \sum_{k=1}^{5} R_{j+1 / 2}^{k}\left[g_{j}^{k}+g_{j+1}^{k}-Q^{k}\left(\nu_{j+1 / 2}^{k}+\gamma_{j+1 / 2}^{k}\right) \alpha_{j+1 / 2}^{k}\right],
 \end{align}
-其中$\lambda=\delta t/\delta r$, $\nu_{j+1 / 2}^{k}=\lambda a^k(v_{j+1/2})$ 且
+其中$\lambda=\delta t/\delta r$, $\nu_{j+1 / 2}^{k}=\lambda a^k(w_{j+1/2})$ 且
 \begin{align}
 g_{i}^{k}=& s_{i+1 / 2}^{k} \max \left[0, \min \left(\left|\tilde{g}_{i+1 / 2}^{k}\right|, \tilde{g}_{i-1 / 2}^{k} s_{i+1 / 2}^{k}\right)\right] \\
 s_{i+1 / 2}^{k}=&\operatorname{sgn}\left(\tilde{g}_{i+1 / 2}^{k}\right) \\ 
@@ -223,17 +223,17 @@ hw3.pdf -- 本报告PDF输出文件.
 \item
 References.bib -- 文献文件.
 \item
-fig\_tvd.pdf -- Lax-Wendroff格式计算结果, 133网格.
+hw3\_lax\_300.eps -- Lax-Wendroff格式计算结果, 300网格.
 \item
-fig\_tvd.pdf -- Lax-Wendroff格式计算结果, 261网格.
+hw3\_lax\_600.eps -- Lax-Wendroff格式计算结果, 600网格.
 \item
-fig\_tvd.pdf -- van Leer TVD格式计算结果, 133网格.
+fig\_tvd\_1.pdf -- van Leer TVD格式计算结果, 251网格.
 \item
-fig\_tvd.pdf -- van Leer TVD格式计算结果, 261网格.
+fig\_tvd\_2.pdf -- van Leer TVD格式计算结果, 501网格.
 \item 
 tvd.pro, hw3\_tvd.pro -- TVD格式计算的IDL程序.
 \item 
-lax.pro -- Lax-Wendroff格式计算的IDL程序.
+hw3\_lax.pro -- Lax-Wendroff格式计算的IDL程序.
 \item
 Hydrodynamics.xlsx -- 相关问题Excel计算表格, 深绿色单元为输入, 可以变更, 供大家参考. 其中
 \begin{enumerate}
