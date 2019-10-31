@@ -1,8 +1,8 @@
 pro hw3_lax
 
 ;setting parameters:dt/dx=0.18 and 300,400 or 600 points
-cor=0.18
-nx=200
+cor=0.15
+nx=300
 nt=long(0.14*nx/cor)
 w=dblarr(3,2*nx,nt+1)
 gam=1.4
@@ -31,7 +31,8 @@ for i=0,nt-1 do begin
     w[*,2*nx-1,i+1]=w[*,2*nx-2,i+1]
     w[*,0,i+1]=w[*,1,i+1]
 endfor
-print,w[0,*,50]
+print,aplus
+;print,w[0,*,50]
 
 ;setting parameters of analytic resolution
 
@@ -43,14 +44,15 @@ wref=[[0.445,0.445,0.345,0.345,1.304,1.304,0.500,0.500],$
 strtt=['density','mass flux','energy']
 set_plot,'ps'
 loadct,39
-device,filename='hw3_lax_400'+'.eps',/color,ENCAPSULATED=1
+device,filename='hw3_lax_600'+'.eps',/color,ENCAPSULATED=1
 !p.multi=[0,0,3]
 for k=0,2 do begin
     plot,x,w[k,*,nt],ytitle=strtt[k],xtitle='x',yrange=[1.1*min(w[k,*,nt])-0.1*max(w[k,*,nt]),1.1*max(w[k,*,nt])-0.1*min(w[k,*,nt])],charsize=1.6,charthick=2,psym=4,symsize=0.85
+    oplot,x,w[k,*,nt],linestyle=4
     oplot,xref,wref[*,k]
     oplot,x,w[k,*,0],linestyle=1
 endfor
-xyouts,-0.3,55,'Lax scheme with 400 points',charthick=2
+xyouts,-0.5,55,'Lax-Windroff scheme with 600 points',charthick=2
 device,/close
 ;print,w[0,*,nt]
 end
@@ -68,7 +70,9 @@ a[1,2]=gamp-1
 a[2,0]=(gamp-1)*u^3-gamp*u/wp[0]*wp[2]
 a[2,1]=gamp*wp[2]/wp[0]-1.5*(gamp-1)*u^2
 a[2,2]=gamp*u
+
 return,a
+
 end
 
 function fw,wp1,gamp1

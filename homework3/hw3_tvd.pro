@@ -4,10 +4,10 @@ PRO hw3_tvd
 gam=1.4   ;gamma
 WL=[[0.445],[0.311],[8.928]]
 WR=[[0.5],[0.0],[1.4275]]
-num=251L
+num=300L
 t0=0.14
 ul=4 ;max(u+a)
-CFL=0.8 ;CFL coefficient
+CFL=0.6 ;CFL coefficient
 x=FINDGEN(num)/(num-1)*2-1    ;x from -1 to 1
 dx=2./(num-1)
 dt=dx*CFL/ul
