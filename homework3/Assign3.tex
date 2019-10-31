@@ -36,8 +36,7 @@
 \maketitle
 
 \begin{abstract}
-讨论一维气体激波管问题的有限差分数值解法, 结合理论分析讨论该方程的物理解和数值解的特性,
-分析流体中不同波模的物理和数值特性.
+采用不同格式的有限差分数值解法讨论了一维气体激波管的问题; 比较了不同格式的差异. 
 \end{abstract}
 
 \section{方程和初始条件}
@@ -130,7 +129,7 @@ w_{j}^{n+1}=&w_{j}^{n}-\lambda\left(\bar{f}_{j+1 / 2}^{n}-\bar{f}_{j-1 / 2}^{n}\
 \frac{1}{2}\left[f\left(w_{j}\right)+f\left(w_{j+1}\right)\right] \nonumber
 \\ &+\frac{1}{2 \lambda} \sum_{k=1}^{3} R_{j+1 / 2}^{k}\left[g_{j}^{k}+g_{j+1}^{k}-Q^{k}\left(\nu_{j+1 / 2}^{k}+\gamma_{j+1 / 2}^{k}\right) \alpha_{j+1 / 2}^{k}\right],
 \end{align}
-其中$\lambda=\delta t/\delta x$, $\nu_{j+1 / 2}^{k}=\lambda \left[w_{j+1/2}-c,\quad w_{j+1/2},\quad w_{j+1/2}+c \right]$ 且
+其中$\lambda=\Delta t/\Delta x$, $\nu_{j+1 / 2}^{k}=\lambda \left[w_{j+1/2}-c,\quad w_{j+1/2},\quad w_{j+1/2}+c \right]$ 且
 \begin{align}
 g_{i}^{k}=& s_{i+1 / 2}^{k} \max \left[0, \min \left(\left|\tilde{g}_{i+1 / 2}^{k}\right|, \tilde{g}_{i-1 / 2}^{k} s_{i+1 / 2}^{k}\right)\right] \\
 s_{i+1 / 2}^{k}=&\operatorname{sgn}\left(\tilde{g}_{i+1 / 2}^{k}\right) \\ 
@@ -139,7 +138,7 @@ s_{i+1 / 2}^{k}=&\operatorname{sgn}\left(\tilde{g}_{i+1 / 2}^{k}\right) \\
 \end{align}
 其中$Q(x)$是与数值粘性系数相关的函数, 为确保计算结果满足要求, $Q(x)$应满足
 \begin{align}
-	|x| \leq Q(x) \leq 1 \quad for\ 0 \leq |x| \leq \mu \leq 1
+	|x| \leq Q(x) \leq 1 \quad \text{for}\ 0 \leq |x| \leq \mu \leq 1
 \end{align}
 可以将$Q(x)$的值取为
 \begin{align}
@@ -188,9 +187,11 @@ c^2 =& \gamma \frac{p}{\rho}.
 \end{align*}
 
 \section{结果与分析}
-为了分析不同格式和不同网格密度下的结果, 本文给出四个算例, Lax-Wendroff格式和TVD格式的CFL 系数均取0.8, $t=0.14$ 时刻的数值的计算结果. Lax-Wendroff格式, 300网格的数据如图\ref{Fig:LaxA}, Lax-Wendroff格式, 600网格的数据如图\ref{Fig:LaxB}, TVD格式, 251网格的数据如图\ref{Fig:vanLeerA}, 以及TVD格式, 501网格的数据如图\ref{Fig:vanLeerB}. 从四个算例的对比中, 可以看到Lax-Wendroff格式存在色散, 而TVD格式不存在色散, 计算过程中网格密度取得越大, 间断的宽度越小.
+为了分析不同格式和不同网格密度下的结果, 本文给出四个算例, CFL 系数均取0.6, $t=0.14$ 时刻的数值的计算结果. Lax-Wendroff格式, 300网格的数据如图\ref{Fig:LaxA}, Lax-Wendroff格式, 600网格的数据如图\ref{Fig:LaxB}, TVD格式, 300网格的数据如图\ref{Fig:vanLeerA}, 以及TVD格式, 600网格的数据如图\ref{Fig:vanLeerB}. 
 
-\begin{figure}
+对比相同网格数的不同格式的计算结果, 可以看到Lax-Wendroff格式存在明显的色散 (上冲和下冲), 而TVD格式不存在色散, 计算效果较好; 对比相同格式的不同网格数的计算结果, 可以看到计算过程中网格密度取得越大, 计算的效果越好.
+
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width=.85\textwidth]{hw3_lax_300.eps}
 \caption{Lax-Wendroff格式计算结果, 网格点数为 300. \textbf{从上到下分别是密度 $\rho$, 能量 $E$ 和质量流 $m = \rho u$.}
@@ -198,7 +199,7 @@ c^2 =& \gamma \frac{p}{\rho}.
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width=.85\textwidth]{hw3_lax_600.eps}
 \caption{Lax-Wendrof格式计算结果, 网格点数为 600. 
@@ -206,21 +207,21 @@ c^2 =& \gamma \frac{p}{\rho}.
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width=.85\textwidth]{fig_tvd_1.pdf}
-\caption{(van Leer) TVD 格式计算结果, 网格点数为 251. \textbf{从上到下分别是密度 $\rho$, 能量 $E$ 和质量流 $m = \rho u$.}
+\caption{(van Leer) TVD 格式计算结果, 网格点数为 300. \textbf{从上到下分别是密度 $\rho$, 能量 $E$ 和质量流 $m = \rho u$.}
 其中点线是初值, 虚线 (上面的数据点用符号 $\circ$ 标注) 是 $t=0.14$ 时的数值结果, 实线是对应的真实解. }\label{Fig:vanLeerA}
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width=.85\textwidth]{fig_tvd_2.pdf}
-\caption{(van Leer) TVD 格式计算结果, 网格点数为 501. 其他标注同图\ref{Fig:vanleerA}.}\label{Fig:vanLeerB}
+\caption{(van Leer) TVD 格式计算结果, 网格点数为 600. 其他标注同图\ref{Fig:vanLeerA}.}\label{Fig:vanLeerB}
 \end{center}
 \end{figure}
-
+\clearpage
 \section*{分工说明}
 
 \begin{itemize}
@@ -233,9 +234,9 @@ c^2 =& \gamma \frac{p}{\rho}.
 \section*{文件清单}
 \begin{enumerate}
 \item
-hw3.tex -- 本报告\LaTeX 文件.
+Assign3.tex -- 本报告\LaTeX 文件.
 \item
-hw3.pdf -- 本报告PDF输出文件.
+Assign3.pdf -- 本报告PDF输出文件.
 \item
 References.bib -- 文献文件.
 \item
@@ -243,21 +244,15 @@ hw3\_lax\_300.eps -- Lax-Wendroff格式计算结果, 300网格.
 \item
 hw3\_lax\_600.eps -- Lax-Wendroff格式计算结果, 600网格.
 \item
-fig\_tvd\_1.pdf -- van Leer TVD格式计算结果, 251网格.
+fig\_tvd\_1.pdf -- van Leer TVD格式计算结果 (已调整边框), 300网格.
 \item
-fig\_tvd\_2.pdf -- van Leer TVD格式计算结果, 501网格.
+fig\_tvd\_2.pdf -- van Leer TVD格式计算结果 (已调整边框), 600网格.
 \item 
-tvd.pro, hw3\_tvd.pro -- TVD格式计算的IDL程序.
+hw3\_tvd.pro -- TVD格式计算的IDL程序.
+\item 
+tvd.pro -- TVD格式计算程序中使用的自编函数.
 \item 
 hw3\_lax.pro -- Lax-Wendroff格式计算的IDL程序.
-\item
-Hydrodynamics.xlsx -- 相关问题Excel计算表格, 深绿色单元为输入, 可以变更, 供大家参考. 其中
-\begin{enumerate}
-\item
-Riemann 表格中, B2为$\gamma$值, B4--B6和E4-E6分别是左侧和右侧的密度, 质量流及能量的初值. A25--A26迭代用值, A24为A25和A26的平均值. 22行复制24行的值. 当G24, 即G22值为零时, 得到此 Riemann 问题的解. N3为时间值, 密度, 质量流及能量图形的坐标初值和对应比例分别由N4--N6和O4--O6调节.
-\item
-Hydrodynamics 表格为对应守恒型方程的矩阵特征值, 左右特征向量, 变量在各个波模的分解, 等等. 这些是后续高精度格式所需要的一些中间结果.
-\end{enumerate}
 \end{enumerate}
 
 \bibliographystyle{apalike}
