@@ -3,7 +3,7 @@ PRO hw4
 nx=201
 gm=5./3 ;gamma
 mu=1 ;mu
-Hx=5
+Hx=5 ;Hx or Bx
 x0=0.
 c=0.1 ;courant coeffitient
 
@@ -21,7 +21,13 @@ U=MAKE_ARRAY(nx,nt,7,/DOUBLE)
 U[*,*,0]=Ws[*,*,0] & U[*,*,2:4]=Ws[*,*,2:4]*Ws[*,*,0] & U[*,*,5:6]=Ws[*,*,5:6]
 bt=4*!PI*Ws[*,*,1]/TOTAL(Ws[*,0,5:6]^2,2)
 U[*,*,1]=0.5*Ws[*,*,0]*TOTAL(Ws[*,*,2:4]^2,3)+0.5*TOTAL(Ws[*,*,5:6]^2,3)+bt*Ws[*,*,1]/(gm-1)
-
+FOR n=0,nt-2 DO BEGIN
+  U[0,n+1,*]=U[0,n,*]
+  U[nx-1,n+1,*]=U[nx-1,n+1,*]
+  FOR j=1,nx-2 DO BEGIN
+    U[j,n+1,*]=U[j,n,*]-c*(Ftvd(U[*,n,*],gm,c,nx,j)-Ftvd(U[*,n,*],gm,c,nx,j-1))
+  ENDFOR
+ENDFOR
 
 ;------------------fast shock-------------
 Wf=MAKE_ARRAY(nx,nt,7) ;fast shock
